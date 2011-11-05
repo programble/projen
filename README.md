@@ -1,7 +1,54 @@
 # Projen
 
 A tool for developers to quickly create new projects based on directory
-templates
+templates.
+
+Projen uses the [Liquid](http://liquidmarkup.org/) template rendering library
+to allow template files to change based on project name, description, or any
+other supplied parameters.
+
+## Install
+
+    gem install projen
+
+## Tutorial
+
+Project template directories are stored in `~/.projen/`. To begin, let's create
+a generic project template directory:
+
+```sh
+mkdir ~/.projen/
+mkdir ~/.projen/generic/
+```
+
+Now, if we want to create a new generic project called "nyan", we can run:
+
+```sh
+projen generic nyan
+```
+
+This will create a new project in the directory `nyan` based on the files in
+the template directory.  But there aren't any files in the generic template for
+Projen to copy! Let's create a README template:
+
+```sh
+$EDITOR ~/.projen/generic/README.md
+```
+
+```markdown
+# {{ project | capitalize }}
+
+This project is called {{ project }}.
+```
+
+Now when we run `projen generic nyan`, Projen should create a file called
+`nyan/README.md` that looks like this:
+
+```markdown
+# Nyan
+
+This project is called nyan.
+```
 
 ## License
 
