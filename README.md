@@ -17,8 +17,7 @@ Project template directories are stored in `~/.projen/`. To begin, let's create
 a generic project template directory:
 
 ```sh
-mkdir ~/.projen/
-mkdir ~/.projen/generic/
+mkdir -p ~/.projen/generic/
 ```
 
 Now, if we want to create a new generic project called "nyan", we can run:
