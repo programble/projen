@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'find'
+require 'liquid'
+
+TEMPLATE_DIR = File.join(Dir.home, '.projen')
+
+def relative_path(path, base)
+  path.start_with?(base) ?  path[base.length+1..-1] : path
+end
+
+if ARGV.length < 2
+  puts 'usage: projen TEMPLATE PROJECT [DESCRIPTION]...'
+  exit 1
+end
+
+template = ARGV[0]
+project = ARGV[1]
+template_path = File.join(TEMPLATE_DIR, template)
+project_path = File.expand_path(project)
+
+unless File.directory?(template_path)
+  puts "error: the template '#{template}' does not exist"
+  exit 1
+end
+
+if File.exist?(project_path)
+  puts "error: '#{project}' already exists"
+  exit 1
+end
+
+Find.find(template_path) do |template_file|
+  next unless File.file?(template_file)
+  next if template_file[-1] == '~'
+
+  project_file = File.join(project_path, relative_path(template_file, template_path))
+
+  FileUtils.mkdir_p(File.dirname(project_file))
+  File.open(project_file, 'w') do |f|
+    liquid = Liquid::Template.parse(File.open(template_file).read)
+    f.write(liquid.render('project' => project, 'description' => ARGV[2], 'argv' => ARGV[1..-1]))
+  end
+end
