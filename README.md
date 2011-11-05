@@ -34,6 +34,7 @@ Projen to copy! Let's create a README template:
 $EDITOR ~/.projen/generic/README.md
 ```
 
+##### ~/.projen/generic/README.md
 ```markdown
 # {{ project | capitalize }}
 
@@ -43,6 +44,7 @@ This project is called {{ project }}.
 Now when we run `projen generic nyan`, Projen should create a file called
 `nyan/README.md` that looks like this:
 
+##### nyan/README.md
 ```markdown
 # Nyan
 
